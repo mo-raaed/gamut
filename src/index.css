@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Gamut Brand Colors */
+  --color-gamut-50: #f0f0ff;
+  --color-gamut-100: #e0e0ff;
+  --color-gamut-200: #c7c7fe;
+  --color-gamut-300: #a3a3fc;
+  --color-gamut-400: #8080f8;
+  --color-gamut-500: #6c5ce7;
+  --color-gamut-600: #5a3fd6;
+  --color-gamut-700: #4c32b8;
+  --color-gamut-800: #3f2a96;
+  --color-gamut-900: #36267a;
+  --color-gamut-950: #211652;
+
+  /* Semantic Colors (light mode defaults in custom properties below) */
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #6c5ce7;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-primary: #6c5ce7;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f5f9;
+  --color-secondary-foreground: #0f172a;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #f1f5f9;
+  --color-accent-foreground: #0f172a;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+  --color-scope-bg: #1a1a2e;
+  --color-scope-grid: #2a2a4a;
+
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.25rem;
+}
+
+/* ── Dark Mode ── */
+.dark {
+  --color-border: #1e293b;
+  --color-input: #1e293b;
+  --color-ring: #8080f8;
+  --color-background: #0a0a14;
+  --color-foreground: #f1f5f9;
+  --color-primary: #8080f8;
+  --color-primary-foreground: #0a0a14;
+  --color-secondary: #1e293b;
+  --color-secondary-foreground: #f1f5f9;
+  --color-muted: #1e293b;
+  --color-muted-foreground: #94a3b8;
+  --color-accent: #1e293b;
+  --color-accent-foreground: #f1f5f9;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #f1f5f9;
+  --color-card: #0f0f1e;
+  --color-card-foreground: #f1f5f9;
+  --color-popover: #0f0f1e;
+  --color-popover-foreground: #f1f5f9;
+  --color-scope-bg: #0a0a14;
+  --color-scope-grid: #1a1a2e;
+}
+
+/* ── Base Styles ── */
+* {
+  border-color: var(--color-border);
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+}
+
+/* ── Custom Slider Track (for shadcn sliders) ── */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+/* ── Scope Canvas Crisp Rendering ── */
+.scope-canvas {
+  image-rendering: pixelated;
+}
+
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-foreground);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-foreground);
+}
