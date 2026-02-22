@@ -42,7 +42,7 @@ export function ScopePanel({ scopeData }: ScopePanelProps) {
       </div>
 
       {/* Scope canvases */}
-      <div className="flex-1 min-h-0 p-2">
+      <div className="flex-1 min-h-0 p-2 pb-4">
         {activeScope === "all" ? (
           <div className="grid grid-cols-3 gap-2 h-full">
             <HistogramScope

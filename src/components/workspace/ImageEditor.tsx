@@ -11,7 +11,7 @@ import { ScopePanel } from "@/components/scopes/ScopePanel";
 import { Toolbar } from "@/components/layout/Toolbar";
 import { PresetHint } from "@/components/education/PresetHint";
 import { cn } from "@/lib/utils";
-import type { LoadedImage } from "@/types";
+import type { LoadedImage, AdjustmentState } from "@/types";
 
 const SCOPE_SIZE = 512;
 
@@ -72,21 +72,38 @@ export function ImageEditor() {
     uploadImage(image.element);
   }, [image, showUpload, init, uploadImage]);
 
-  // Re-render whenever adjustments or clipping change
+  // Use rAF for render + debounced scope computation for smooth slider feel
+  const rafRef = useRef<number>(0);
+  const scopeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if (!image || showUpload) return;
 
-    const adj = {
+    const adj: AdjustmentState = {
       brightness, contrast, highlights, midtones, shadows,
       saturation, vibrance, temperature, tint,
     };
-    render(adj, showClipping);
 
-    // Compute scope data from downscaled readback
-    const pixels = readScopeData(adj);
-    if (pixels) {
-      computeScopes(pixels, SCOPE_SIZE, SCOPE_SIZE);
-    }
+    // Cancel any pending rAF to coalesce fast slider moves
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    rafRef.current = requestAnimationFrame(() => {
+      // WebGL render is fast — do it every frame
+      render(adj, showClipping);
+
+      // Debounce scope computation (heavier) to 60ms after last change
+      if (scopeTimerRef.current) clearTimeout(scopeTimerRef.current);
+      scopeTimerRef.current = setTimeout(() => {
+        const pixels = readScopeData(adj);
+        if (pixels) {
+          computeScopes(pixels, SCOPE_SIZE, SCOPE_SIZE);
+        }
+      }, 60);
+    });
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, [
     image, showUpload,
     brightness, contrast, highlights, midtones, shadows,
@@ -195,7 +212,7 @@ export function ImageEditor() {
           <div
             className={cn(
               "border-t border-border bg-card/50 transition-all duration-300 overflow-hidden",
-              bottomPanelOpen ? "h-48" : "h-0"
+              bottomPanelOpen ? "h-72" : "h-0"
             )}
           >
             {bottomPanelOpen && <ScopePanel scopeData={scopeData} />}

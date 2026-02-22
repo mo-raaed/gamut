@@ -37,7 +37,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
           {/* Fill — for bipolar sliders, fill from center */}
           {hasCenter ? (
             <div
-              className="absolute top-0 h-full bg-primary rounded-full transition-all duration-75"
+              className="absolute top-0 h-full bg-primary rounded-full"
               style={{
                 left: `${Math.min(centerPct, pct)}%`,
                 width: `${Math.abs(pct - centerPct)}%`,
@@ -45,7 +45,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
             />
           ) : (
             <div
-              className="absolute top-0 left-0 h-full bg-primary rounded-full transition-all duration-75"
+              className="absolute top-0 left-0 h-full bg-primary rounded-full"
               style={{ width: `${pct}%` }}
             />
           )}
@@ -59,7 +59,7 @@ export const Slider = React.forwardRef<HTMLInputElement, SliderProps>(
         </div>
         {/* Thumb */}
         <div
-          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-primary border-2 border-background shadow-md transition-transform duration-75 group-hover:scale-110 pointer-events-none"
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-primary border-2 border-background shadow-md group-hover:scale-110 pointer-events-none"
           style={{ left: `${pct}%` }}
         />
       </div>
