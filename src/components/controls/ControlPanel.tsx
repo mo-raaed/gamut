@@ -40,6 +40,11 @@ const SliderRow = React.memo(function SliderRow({
     [setValue, sliderKey]
   );
 
+  const handleReset = useCallback(
+    () => setValue(sliderKey, 0),
+    [setValue, sliderKey]
+  );
+
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
@@ -51,14 +56,19 @@ const SliderRow = React.memo(function SliderRow({
             {label}
           </label>
         </Tooltip>
-        <span
+        <button
+          onClick={handleReset}
+          title="Reset to 0"
           className={cn(
-            "text-[10px] font-mono tabular-nums w-8 text-right",
-            value === 0 ? "text-muted-foreground" : "text-foreground"
+            "text-[10px] font-mono tabular-nums w-8 text-right rounded px-0.5 transition-colors",
+            value === 0
+              ? "text-muted-foreground cursor-default"
+              : "text-foreground hover:text-primary hover:bg-primary/10 cursor-pointer"
           )}
+          disabled={value === 0}
         >
           {value > 0 ? `+${value}` : value}
-        </span>
+        </button>
       </div>
       <Slider
         id={sliderKey}
