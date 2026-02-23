@@ -23,12 +23,16 @@ export function PresetHint() {
   const temperature = useAdjustmentStore((s) => s.temperature);
   const tint = useAdjustmentStore((s) => s.tint);
   const denoise = useAdjustmentStore((s) => s.denoise);
+  const denoiseGaussian = useAdjustmentStore((s) => s.denoiseGaussian);
+  const denoiseSP = useAdjustmentStore((s) => s.denoiseSP);
+  const denoiseImpulse = useAdjustmentStore((s) => s.denoiseImpulse);
 
   // Detect when a preset is applied by matching current values
   useEffect(() => {
     const adjustments = {
       brightness, contrast, highlights, midtones, shadows,
-      saturation, vibrance, temperature, tint, denoise,
+      saturation, vibrance, temperature, tint,
+      denoise, denoiseGaussian, denoiseSP, denoiseImpulse,
     };
 
     for (const preset of PRESETS) {
@@ -53,7 +57,7 @@ export function PresetHint() {
     }
     // No preset found — hide (but don't reset activeHint to allow fade-out)
     setVisible(false);
-  }, [brightness, contrast, highlights, midtones, shadows, saturation, vibrance, temperature, tint, denoise]);
+  }, [brightness, contrast, highlights, midtones, shadows, saturation, vibrance, temperature, tint, denoise, denoiseGaussian, denoiseSP, denoiseImpulse]);
 
   const preset = PRESETS.find((p) => p.id === activeHint);
   if (!preset) return null;

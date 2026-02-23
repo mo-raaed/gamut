@@ -106,12 +106,39 @@ export const SLIDER_GROUPS: SliderGroupDef[] = [
     sliders: [
       {
         key: "denoise",
-        label: "Denoise",
+        label: "Bilateral",
         min: 0,
         max: 100,
         step: 1,
         tooltip:
-          "Bilateral filter that smooths noise while preserving edges. Watch the Noise Floor scope — the spiky peaks flatten as you increase this. Higher values = smoother but softer image.",
+          "Bilateral filter that smooths noise while preserving edges. Best for general-purpose denoising. Watch the Noise Floor scope — spiky peaks flatten as you increase this.",
+      },
+      {
+        key: "denoiseGaussian",
+        label: "Gaussian",
+        min: 0,
+        max: 100,
+        step: 1,
+        tooltip:
+          "Gaussian blur — best for additive (Gaussian) noise that appears as uniform grain across the image. Blends each pixel with a weighted average of its neighbors. Softens everything uniformly.",
+      },
+      {
+        key: "denoiseSP",
+        label: "Salt & Pepper",
+        min: 0,
+        max: 100,
+        step: 1,
+        tooltip:
+          "Median filter — specifically designed for salt & pepper noise (random pure-white and pure-black pixels). Replaces each pixel with the median of its 3×3 neighborhood, which ignores extreme outliers.",
+      },
+      {
+        key: "denoiseImpulse",
+        label: "Impulse",
+        min: 0,
+        max: 100,
+        step: 1,
+        tooltip:
+          "Adaptive median filter — targets impulse noise (random spikes on individual color channels). Only replaces pixels that deviate significantly from their neighbors, leaving clean pixels untouched.",
       },
     ],
   },

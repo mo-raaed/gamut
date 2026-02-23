@@ -12,6 +12,9 @@ const DEFAULT_ADJUSTMENTS: AdjustmentState = {
   temperature: 0,
   tint: 0,
   denoise: 0,
+  denoiseGaussian: 0,
+  denoiseSP: 0,
+  denoiseImpulse: 0,
 };
 
 interface AdjustmentStore extends AdjustmentState {
@@ -47,6 +50,9 @@ export const useAdjustmentStore = create<AdjustmentStore>()((set, get) => ({
       temperature: state.temperature,
       tint: state.tint,
       denoise: state.denoise,
+      denoiseGaussian: state.denoiseGaussian,
+      denoiseSP: state.denoiseSP,
+      denoiseImpulse: state.denoiseImpulse,
     };
   },
 }));

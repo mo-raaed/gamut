@@ -70,6 +70,9 @@ function getUniformLocations(
     "uTemperature",
     "uTint",
     "uDenoise",
+    "uDenoiseGaussian",
+    "uDenoiseSP",
+    "uDenoiseImpulse",
     "uResolution",
     "uShowClipping",
   ];
@@ -219,6 +222,9 @@ export function useWebGL(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       if (uniforms.uTemperature) gl.uniform1f(uniforms.uTemperature, m(adjustments.temperature));
       if (uniforms.uTint) gl.uniform1f(uniforms.uTint, m(adjustments.tint));
       if (uniforms.uDenoise) gl.uniform1f(uniforms.uDenoise, Math.max(0, adjustments.denoise) / 100);
+      if (uniforms.uDenoiseGaussian) gl.uniform1f(uniforms.uDenoiseGaussian, Math.max(0, adjustments.denoiseGaussian) / 100);
+      if (uniforms.uDenoiseSP) gl.uniform1f(uniforms.uDenoiseSP, Math.max(0, adjustments.denoiseSP) / 100);
+      if (uniforms.uDenoiseImpulse) gl.uniform1f(uniforms.uDenoiseImpulse, Math.max(0, adjustments.denoiseImpulse) / 100);
       if (uniforms.uResolution) gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
       if (uniforms.uShowClipping) gl.uniform1i(uniforms.uShowClipping, showClipping ? 1 : 0);
 
@@ -253,6 +259,9 @@ export function useWebGL(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       if (uniforms.uTemperature) gl.uniform1f(uniforms.uTemperature, m(adjustments.temperature));
       if (uniforms.uTint) gl.uniform1f(uniforms.uTint, m(adjustments.tint));
       if (uniforms.uDenoise) gl.uniform1f(uniforms.uDenoise, Math.max(0, adjustments.denoise) / 100);
+      if (uniforms.uDenoiseGaussian) gl.uniform1f(uniforms.uDenoiseGaussian, Math.max(0, adjustments.denoiseGaussian) / 100);
+      if (uniforms.uDenoiseSP) gl.uniform1f(uniforms.uDenoiseSP, Math.max(0, adjustments.denoiseSP) / 100);
+      if (uniforms.uDenoiseImpulse) gl.uniform1f(uniforms.uDenoiseImpulse, Math.max(0, adjustments.denoiseImpulse) / 100);
       if (uniforms.uResolution) gl.uniform2f(uniforms.uResolution, scopeWidth, scopeHeight);
       // Disable clipping for scope readback
       if (uniforms.uShowClipping) gl.uniform1i(uniforms.uShowClipping, 0);
