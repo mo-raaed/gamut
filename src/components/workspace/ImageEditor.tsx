@@ -36,6 +36,9 @@ export function ImageEditor() {
   const temperature = useAdjustmentStore((s) => s.temperature);
   const tint = useAdjustmentStore((s) => s.tint);
   const denoise = useAdjustmentStore((s) => s.denoise);
+  const denoiseGaussian = useAdjustmentStore((s) => s.denoiseGaussian);
+  const denoiseSP = useAdjustmentStore((s) => s.denoiseSP);
+  const denoiseImpulse = useAdjustmentStore((s) => s.denoiseImpulse);
 
   const showClipping = useUIStore((s) => s.showClipping);
   const leftPanelOpen = useUIStore((s) => s.leftPanelOpen);
@@ -82,7 +85,8 @@ export function ImageEditor() {
 
     const adj: AdjustmentState = {
       brightness, contrast, highlights, midtones, shadows,
-      saturation, vibrance, temperature, tint, denoise,
+      saturation, vibrance, temperature, tint,
+      denoise, denoiseGaussian, denoiseSP, denoiseImpulse,
     };
 
     // Cancel any pending rAF to coalesce fast slider moves
@@ -108,7 +112,8 @@ export function ImageEditor() {
   }, [
     image, showUpload,
     brightness, contrast, highlights, midtones, shadows,
-    saturation, vibrance, temperature, tint, denoise,
+    saturation, vibrance, temperature, tint,
+    denoise, denoiseGaussian, denoiseSP, denoiseImpulse,
     showClipping,
     render,
     readScopeData,

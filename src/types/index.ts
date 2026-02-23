@@ -20,7 +20,10 @@ export interface AdjustmentState {
   tint: number; // -100 to +100, default 0
 
   // Detail
-  denoise: number; // 0 to 100, default 0 (bilateral filter strength)
+  denoise: number; // 0 to 100, default 0 (bilateral filter — edge-preserving)
+  denoiseGaussian: number; // 0 to 100, default 0 (Gaussian blur — additive noise)
+  denoiseSP: number; // 0 to 100, default 0 (median filter — salt & pepper noise)
+  denoiseImpulse: number; // 0 to 100, default 0 (adaptive median — impulse noise)
 }
 
 /** Names of all adjustment parameters */
