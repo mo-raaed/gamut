@@ -14,6 +14,7 @@ const ICONS: Record<string, React.ReactNode> = {
   sun: <Sun className="w-3.5 h-3.5" />,
   layers: <Layers className="w-3.5 h-3.5" />,
   palette: <Palette className="w-3.5 h-3.5" />,
+  sparkles: <Sparkles className="w-3.5 h-3.5" />,
 };
 
 /** Individual slider row — only re-renders when its own value changes */

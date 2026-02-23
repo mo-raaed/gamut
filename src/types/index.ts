@@ -18,6 +18,9 @@ export interface AdjustmentState {
   vibrance: number; // -100 to +100, default 0
   temperature: number; // -100 to +100, default 0
   tint: number; // -100 to +100, default 0
+
+  // Detail
+  denoise: number; // 0 to 100, default 0 (bilateral filter strength)
 }
 
 /** Names of all adjustment parameters */
@@ -55,6 +58,15 @@ export interface ScopeData {
     luma: Float32Array; // width × 256 density map
     width: number;
   };
+  noise: {
+    /** High-frequency energy histogram (256 bins, 0=smooth..255=noisy) */
+    histogram: Uint32Array;
+    /** Average noise level 0..255 */
+    mean: number;
+    /** Per-column noise energy (width bins, normalized 0..1) */
+    columns: Float32Array;
+    width: number;
+  };
 }
 
 /** Messages sent TO the scope worker */
@@ -84,6 +96,12 @@ export interface ScopeWorkerResult {
     luma: Float32Array;
     width: number;
   };
+  noise: {
+    histogram: Uint32Array;
+    mean: number;
+    columns: Float32Array;
+    width: number;
+  };
 }
 
 /** Preset scenario definition */
@@ -100,7 +118,7 @@ export interface UIState {
   theme: "light" | "dark";
   showClipping: boolean;
   showComparison: boolean;
-  activeScope: "histogram" | "parade" | "waveform" | "all";
+  activeScope: "histogram" | "parade" | "waveform" | "noise" | "all";
   leftPanelOpen: boolean;
   bottomPanelOpen: boolean;
   comparisonPosition: number; // 0-1 position of the split curtain

@@ -26,19 +26,50 @@ uniform float uVibrance;    // -1.0 to +1.0
 uniform float uTemperature; // -1.0 to +1.0
 uniform float uTint;        // -1.0 to +1.0
 
+// ── Detail ──
+uniform float uDenoise;     // 0.0 to 1.0  (0 = off, 1 = max smoothing)
+uniform vec2  uResolution;  // pixel dimensions of texture
+
 // ── Clipping ──
 uniform bool uShowClipping;
 
 // BT.709 luminance coefficients
 const vec3 LUMA_COEFF = vec3(0.2126, 0.7152, 0.0722);
 
-// Attempt to linearize sRGB (approximate)
-vec3 srgbToLinear(vec3 c) {
-  return pow(c, vec3(2.2));
-}
+// ────────────────────────────────────────────
+// Bilateral filter (edge-preserving denoise)
+// Samples a 5×5 neighbourhood.
+// Spatial sigma is fixed; range sigma scales with uDenoise.
+// ────────────────────────────────────────────
+vec3 bilateral(vec2 uv, float strength) {
+  vec2 texel = 1.0 / uResolution;
+  vec3 center = texture(uImage, uv).rgb;
+  float rangeSigma = 0.05 + strength * 0.35; // higher = more smoothing
+  float rangeSigma2 = -1.0 / (2.0 * rangeSigma * rangeSigma);
 
-vec3 linearToSrgb(vec3 c) {
-  return pow(c, vec3(1.0 / 2.2));
+  vec3  sumColor  = vec3(0.0);
+  float sumWeight = 0.0;
+
+  // Spatial weights for a 5×5 kernel (pre-computed Gaussian, sigma≈1.5)
+  const int R = 2;
+  for (int dy = -R; dy <= R; dy++) {
+    for (int dx = -R; dx <= R; dx++) {
+      vec2 offset = vec2(float(dx), float(dy)) * texel;
+      vec3 sampleC = texture(uImage, uv + offset).rgb;
+      vec3 diff = sampleC - center;
+      float dist2 = dot(diff, diff);
+
+      // Spatial Gaussian (sigma=1.5, pre-squared=2.25)
+      float spatialW = exp(-float(dx*dx + dy*dy) / 4.5);
+      // Range Gaussian
+      float rangeW = exp(dist2 * rangeSigma2);
+
+      float w = spatialW * rangeW;
+      sumColor += sampleC * w;
+      sumWeight += w;
+    }
+  }
+  return sumColor / sumWeight;
 }
 
 // Smooth step mask for tonal ranges
@@ -55,7 +86,13 @@ float midtoneMask(float luma) {
 }
 
 void main() {
-  vec3 color = texture(uImage, vUV).rgb;
+  // ── 0. Denoise (bilateral filter — done first on raw pixels) ──
+  vec3 color;
+  if (uDenoise > 0.001) {
+    color = bilateral(vUV, uDenoise);
+  } else {
+    color = texture(uImage, vUV).rgb;
+  }
 
   // ── 1. Brightness (simple additive shift) ──
   color += uBrightness * 0.5;

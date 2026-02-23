@@ -100,4 +100,19 @@ export const SLIDER_GROUPS: SliderGroupDef[] = [
       },
     ],
   },
+  {
+    label: "Detail",
+    icon: "sparkles",
+    sliders: [
+      {
+        key: "denoise",
+        label: "Denoise",
+        min: 0,
+        max: 100,
+        step: 1,
+        tooltip:
+          "Bilateral filter that smooths noise while preserving edges. Watch the Noise Floor scope — the spiky peaks flatten as you increase this. Higher values = smoother but softer image.",
+      },
+    ],
+  },
 ];

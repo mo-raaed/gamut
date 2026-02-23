@@ -17,6 +17,7 @@ export function useScopeWorker() {
           histogram: e.data.histogram,
           parade: e.data.parade,
           waveform: e.data.waveform,
+          noise: e.data.noise,
         });
       }
     };

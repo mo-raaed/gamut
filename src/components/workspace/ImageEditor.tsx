@@ -35,6 +35,7 @@ export function ImageEditor() {
   const vibrance = useAdjustmentStore((s) => s.vibrance);
   const temperature = useAdjustmentStore((s) => s.temperature);
   const tint = useAdjustmentStore((s) => s.tint);
+  const denoise = useAdjustmentStore((s) => s.denoise);
 
   const showClipping = useUIStore((s) => s.showClipping);
   const leftPanelOpen = useUIStore((s) => s.leftPanelOpen);
@@ -81,7 +82,7 @@ export function ImageEditor() {
 
     const adj: AdjustmentState = {
       brightness, contrast, highlights, midtones, shadows,
-      saturation, vibrance, temperature, tint,
+      saturation, vibrance, temperature, tint, denoise,
     };
 
     // Cancel any pending rAF to coalesce fast slider moves
@@ -107,7 +108,7 @@ export function ImageEditor() {
   }, [
     image, showUpload,
     brightness, contrast, highlights, midtones, shadows,
-    saturation, vibrance, temperature, tint,
+    saturation, vibrance, temperature, tint, denoise,
     showClipping,
     render,
     readScopeData,

@@ -1,10 +1,11 @@
 import { HistogramScope } from "./HistogramScope";
 import { ParadeScope } from "./ParadeScope";
 import { WaveformScope } from "./WaveformScope";
+import { NoiseScope } from "./NoiseScope";
 import type { ScopeData } from "@/types";
 import { useUIStore } from "@/stores/uiStore";
 import { cn } from "@/lib/utils";
-import { BarChart3, Activity, Radio } from "lucide-react";
+import { BarChart3, Activity, Radio, Zap } from "lucide-react";
 
 interface ScopePanelProps {
   scopeData: ScopeData | null;
@@ -15,6 +16,7 @@ const SCOPE_TABS = [
   { id: "histogram" as const, label: "Histogram", icon: BarChart3 },
   { id: "parade" as const, label: "Parade", icon: Activity },
   { id: "waveform" as const, label: "Waveform", icon: Radio },
+  { id: "noise" as const, label: "Noise", icon: Zap },
 ];
 
 export function ScopePanel({ scopeData }: ScopePanelProps) {
@@ -44,7 +46,7 @@ export function ScopePanel({ scopeData }: ScopePanelProps) {
       {/* Scope canvases */}
       <div className="flex-1 min-h-0 p-2 pb-4">
         {activeScope === "all" ? (
-          <div className="grid grid-cols-3 gap-2 h-full">
+          <div className="grid grid-cols-2 grid-rows-2 gap-2 h-full">
             <HistogramScope
               data={scopeData?.histogram ?? null}
               className="h-full"
@@ -57,6 +59,10 @@ export function ScopePanel({ scopeData }: ScopePanelProps) {
               data={scopeData?.waveform ?? null}
               className="h-full"
             />
+            <NoiseScope
+              data={scopeData?.noise ?? null}
+              className="h-full"
+            />
           </div>
         ) : activeScope === "histogram" ? (
           <HistogramScope
@@ -66,6 +72,11 @@ export function ScopePanel({ scopeData }: ScopePanelProps) {
         ) : activeScope === "parade" ? (
           <ParadeScope
             data={scopeData?.parade ?? null}
+            className="h-full"
+          />
+        ) : activeScope === "noise" ? (
+          <NoiseScope
+            data={scopeData?.noise ?? null}
             className="h-full"
           />
         ) : (

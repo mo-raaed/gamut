@@ -11,6 +11,7 @@ const DEFAULT_ADJUSTMENTS: AdjustmentState = {
   vibrance: 0,
   temperature: 0,
   tint: 0,
+  denoise: 0,
 };
 
 interface AdjustmentStore extends AdjustmentState {
@@ -45,6 +46,7 @@ export const useAdjustmentStore = create<AdjustmentStore>()((set, get) => ({
       vibrance: state.vibrance,
       temperature: state.temperature,
       tint: state.tint,
+      denoise: state.denoise,
     };
   },
 }));

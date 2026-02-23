@@ -65,4 +65,12 @@ export const SAMPLE_PHOTOS: SamplePhoto[] = [
     url: "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1600&q=85&auto=format",
     credit: "Unsplash",
   },
+  {
+    id: "noisy-dark",
+    name: "Night Grain",
+    description: "High-ISO noise — perfect for testing the denoise slider",
+    thumb: "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=300&q=80&auto=format",
+    url: "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=1600&q=85&auto=format",
+    credit: "Unsplash",
+  },
 ];

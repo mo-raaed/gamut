@@ -69,6 +69,8 @@ function getUniformLocations(
     "uVibrance",
     "uTemperature",
     "uTint",
+    "uDenoise",
+    "uResolution",
     "uShowClipping",
   ];
   const locs: Record<string, WebGLUniformLocation> = {};
@@ -216,6 +218,8 @@ export function useWebGL(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       if (uniforms.uVibrance) gl.uniform1f(uniforms.uVibrance, m(adjustments.vibrance));
       if (uniforms.uTemperature) gl.uniform1f(uniforms.uTemperature, m(adjustments.temperature));
       if (uniforms.uTint) gl.uniform1f(uniforms.uTint, m(adjustments.tint));
+      if (uniforms.uDenoise) gl.uniform1f(uniforms.uDenoise, Math.max(0, adjustments.denoise) / 100);
+      if (uniforms.uResolution) gl.uniform2f(uniforms.uResolution, canvas.width, canvas.height);
       if (uniforms.uShowClipping) gl.uniform1i(uniforms.uShowClipping, showClipping ? 1 : 0);
 
       // ── Render to screen ──
@@ -248,6 +252,8 @@ export function useWebGL(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
       if (uniforms.uVibrance) gl.uniform1f(uniforms.uVibrance, m(adjustments.vibrance));
       if (uniforms.uTemperature) gl.uniform1f(uniforms.uTemperature, m(adjustments.temperature));
       if (uniforms.uTint) gl.uniform1f(uniforms.uTint, m(adjustments.tint));
+      if (uniforms.uDenoise) gl.uniform1f(uniforms.uDenoise, Math.max(0, adjustments.denoise) / 100);
+      if (uniforms.uResolution) gl.uniform2f(uniforms.uResolution, scopeWidth, scopeHeight);
       // Disable clipping for scope readback
       if (uniforms.uShowClipping) gl.uniform1i(uniforms.uShowClipping, 0);
 

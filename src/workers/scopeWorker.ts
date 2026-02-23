@@ -90,12 +90,67 @@ self.onmessage = (e: MessageEvent<ComputeMessage>) => {
     }
   }
 
+  // ── Noise: high-frequency energy via gradient magnitude ──
+  // Compute per-pixel gradient magnitude using simple 3×3 Sobel-like differences,
+  // then build a histogram and per-column energy for the noise scope.
+  const NOISE_BINS = 256;
+  const noiseHist = new Uint32Array(NOISE_BINS);
+  const noiseColumns = new Float32Array(paradeWidth);
+  let noiseSum = 0;
+  let noiseCount = 0;
+
+  for (let y = 1; y < height - 1; y++) {
+    for (let x = 1; x < width - 1; x++) {
+      // Horizontal gradient (right - left)
+      const lIdx = (y * width + x - 1) * 4;
+      const rIdx = (y * width + x + 1) * 4;
+      const lL = 0.2126 * pixels[lIdx] + 0.7152 * pixels[lIdx + 1] + 0.0722 * pixels[lIdx + 2];
+      const rL = 0.2126 * pixels[rIdx] + 0.7152 * pixels[rIdx + 1] + 0.0722 * pixels[rIdx + 2];
+      const gx = (rL - lL) * 0.5;
+
+      // Vertical gradient (below - above)
+      const aIdx = ((y - 1) * width + x) * 4;
+      const bIdx = ((y + 1) * width + x) * 4;
+      const aL = 0.2126 * pixels[aIdx] + 0.7152 * pixels[aIdx + 1] + 0.0722 * pixels[aIdx + 2];
+      const bL = 0.2126 * pixels[bIdx] + 0.7152 * pixels[bIdx + 1] + 0.0722 * pixels[bIdx + 2];
+      const gy = (bL - aL) * 0.5;
+
+      // Gradient magnitude, clamped to 0-255
+      const mag = Math.min(Math.sqrt(gx * gx + gy * gy), 255);
+      const bin = Math.round(mag);
+
+      noiseHist[bin]++;
+      noiseSum += mag;
+      noiseCount++;
+
+      // Per-column energy (same column mapping as parade)
+      const col = Math.floor(x / colStep);
+      if (col < paradeWidth) {
+        noiseColumns[col] += mag;
+      }
+    }
+  }
+
+  // Normalize noise columns to 0..1
+  let noiseColMax = 0;
+  for (let i = 0; i < noiseColumns.length; i++) {
+    noiseColMax = Math.max(noiseColMax, noiseColumns[i]);
+  }
+  if (noiseColMax > 0) {
+    for (let i = 0; i < noiseColumns.length; i++) {
+      noiseColumns[i] /= noiseColMax;
+    }
+  }
+
+  const noiseMean = noiseCount > 0 ? noiseSum / noiseCount : 0;
+
   self.postMessage(
     {
       type: "result",
       histogram: { r: histR, g: histG, b: histB, luma: histLuma },
       parade: { r: paradeR, g: paradeG, b: paradeB, width: paradeWidth },
       waveform: { luma: waveformLuma, width: paradeWidth },
+      noise: { histogram: noiseHist, mean: noiseMean, columns: noiseColumns, width: paradeWidth },
     },
     // Transfer buffers for zero-copy
     {
@@ -108,6 +163,8 @@ self.onmessage = (e: MessageEvent<ComputeMessage>) => {
         paradeG.buffer,
         paradeB.buffer,
         waveformLuma.buffer,
+        noiseHist.buffer,
+        noiseColumns.buffer,
       ],
     } as unknown as WindowPostMessageOptions
   );
