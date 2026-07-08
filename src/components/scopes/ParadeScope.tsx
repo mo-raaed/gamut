@@ -58,7 +58,7 @@ export function ParadeScope({ data, className }: ParadeScopeProps) {
 
       // Label
       ctx.fillStyle = "rgba(255, 255, 255, 0.35)";
-      ctx.font = "9px Inter, sans-serif";
+      ctx.font = '9px "Plus Jakarta Sans Variable", sans-serif';
       ctx.fillText(label, startX + 4, h - 4);
     };
 

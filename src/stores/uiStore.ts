@@ -16,15 +16,21 @@ function getInitialTheme(): "light" | "dark" {
   if (typeof window === "undefined") return "dark";
   const stored = localStorage.getItem("gamut-theme");
   if (stored === "light" || stored === "dark") return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // Dark-first: color-analysis work reads best on the dark theme,
+  // so first visit defaults to dark (matches the FOUC script).
+  return "dark";
 }
 
-// Sync the <html> classList on initial load so CSS matches immediately
+// Keep exactly one theme class on <html> (FOUC script set one pre-paint)
+function applyThemeClass(theme: "light" | "dark") {
+  const root = document.documentElement;
+  root.classList.remove("light", "dark");
+  root.classList.add(theme);
+}
+
 const initialTheme = getInitialTheme();
 if (typeof document !== "undefined") {
-  document.documentElement.classList.toggle("dark", initialTheme === "dark");
+  applyThemeClass(initialTheme);
 }
 
 export const useUIStore = create<UIStore>()((set, get) => ({
@@ -38,13 +44,13 @@ export const useUIStore = create<UIStore>()((set, get) => ({
 
   toggleTheme: () => {
     const next = get().theme === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
+    applyThemeClass(next);
     localStorage.setItem("gamut-theme", next);
     set({ theme: next });
   },
 
   setTheme: (theme) => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+    applyThemeClass(theme);
     localStorage.setItem("gamut-theme", theme);
     set({ theme });
   },

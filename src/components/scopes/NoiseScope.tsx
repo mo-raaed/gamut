@@ -99,7 +99,7 @@ export function NoiseScope({ data, className }: NoiseScopeProps) {
 
       // Mean label
       ctx.fillStyle = "rgba(255, 200, 60, 0.9)";
-      ctx.font = "bold 8px Inter, monospace";
+      ctx.font = 'bold 8px "Plus Jakarta Sans Variable", monospace';
       const meanLabel = `μ ${data.mean.toFixed(1)}`;
       const labelX = meanX + 4 > w - 40 ? meanX - 44 : meanX + 4;
       ctx.fillText(meanLabel, labelX, histY + 10);
@@ -128,7 +128,7 @@ export function NoiseScope({ data, className }: NoiseScopeProps) {
 
     // ── Labels ──
     ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-    ctx.font = "8px Inter, monospace";
+    ctx.font = '8px "Plus Jakarta Sans Variable", monospace';
     ctx.fillText("GRADIENT", 2, histY + histH - 2);
     ctx.fillText("COLUMN ENERGY", 2, colY + colH - 2);
   }, [data]);

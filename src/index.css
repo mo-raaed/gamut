@@ -1,73 +1,138 @@
+/* Self-hosted fonts (no Google Fonts CDN) */
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/fraunces/wght-italic.css";
 @import "tailwindcss";
 
-/* ── Design Tokens ── */
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+/* Tell Tailwind v4 to use the .dark class for the dark: variant */
+@custom-variant dark (&:is(.dark *));
 
-  /* Gamut Brand Colors */
-  --color-gamut-50: #f0f0ff;
-  --color-gamut-100: #e0e0ff;
-  --color-gamut-200: #c7c7fe;
-  --color-gamut-300: #a3a3fc;
-  --color-gamut-400: #8080f8;
-  --color-gamut-500: #6c5ce7;
-  --color-gamut-600: #5a3fd6;
-  --color-gamut-700: #4c32b8;
-  --color-gamut-800: #3f2a96;
-  --color-gamut-900: #36267a;
-  --color-gamut-950: #211652;
+/* ───────────────────────────────────────────────────────────────
+   Smooth theme crossfade. Typed <color> @property vars interpolate
+   every color at once when the theme class flips. Reduced-motion
+   users get an instant swap via the guard at the bottom.
+   ─────────────────────────────────────────────────────────────── */
+@property --heritage-bg { syntax: "<color>"; inherits: true; initial-value: #0B0E1C; }
+@property --heritage-fg { syntax: "<color>"; inherits: true; initial-value: #ECE9F0; }
+@property --heritage-surface { syntax: "<color>"; inherits: true; initial-value: #141830; }
+@property --heritage-surface-2 { syntax: "<color>"; inherits: true; initial-value: #1B2040; }
+@property --heritage-surface-3 { syntax: "<color>"; inherits: true; initial-value: #232A52; }
+@property --heritage-primary { syntax: "<color>"; inherits: true; initial-value: #8F97EC; }
+@property --heritage-primary-solid { syntax: "<color>"; inherits: true; initial-value: #5560C9; }
+@property --heritage-accent { syntax: "<color>"; inherits: true; initial-value: #D68A9C; }
+@property --heritage-muted-fg { syntax: "<color>"; inherits: true; initial-value: #A9A6BC; }
+@property --heritage-border { syntax: "<color>"; inherits: true; initial-value: rgba(236, 233, 240, 0.14); }
+@property --heritage-ring { syntax: "<color>"; inherits: true; initial-value: #8F97EC; }
 
-  /* Semantic Colors (light mode defaults in custom properties below) */
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #6c5ce7;
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-  --color-primary: #6c5ce7;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
-  --color-accent: #f1f5f9;
-  --color-accent-foreground: #0f172a;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
-  --color-scope-bg: #1a1a2e;
-  --color-scope-grid: #2a2a4a;
-
-  --radius-lg: 0.75rem;
-  --radius-md: 0.5rem;
-  --radius-sm: 0.25rem;
+:root {
+  transition-property: --heritage-bg, --heritage-fg, --heritage-surface, --heritage-surface-2,
+    --heritage-surface-3, --heritage-primary, --heritage-primary-solid, --heritage-accent,
+    --heritage-muted-fg, --heritage-border, --heritage-ring;
+  transition-duration: 0.5s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ── Dark Mode ── */
-.dark {
-  --color-border: #1e293b;
-  --color-input: #1e293b;
-  --color-ring: #8080f8;
-  --color-background: #0a0a14;
-  --color-foreground: #f1f5f9;
-  --color-primary: #8080f8;
-  --color-primary-foreground: #0a0a14;
-  --color-secondary: #1e293b;
-  --color-secondary-foreground: #f1f5f9;
-  --color-muted: #1e293b;
-  --color-muted-foreground: #94a3b8;
-  --color-accent: #1e293b;
-  --color-accent-foreground: #f1f5f9;
-  --color-destructive: #dc2626;
-  --color-destructive-foreground: #f1f5f9;
-  --color-card: #0f0f1e;
-  --color-card-foreground: #f1f5f9;
-  --color-popover: #0f0f1e;
-  --color-popover-foreground: #f1f5f9;
-  --color-scope-bg: #0a0a14;
-  --color-scope-grid: #1a1a2e;
+/* ───────────────────────────────────────────────────────────────
+   Design system: "Heritage" — deep navy + burgundy quiet luxury.
+   Shared across mo-alyousif.com, Gradify, Schedule Maker, Gamut.
+   Gamut is dark-first (color-analysis accuracy): the FOUC script in
+   index.html defaults to dark on first visit; light stays available.
+   Scope canvases stay dark in BOTH themes — signal readability.
+   ─────────────────────────────────────────────────────────────── */
+:root, .dark {
+  color-scheme: dark;
+
+  --heritage-bg: #0B0E1C;
+  --heritage-fg: #ECE9F0;
+  --heritage-surface: #141830;
+  --heritage-surface-2: #1B2040;
+  --heritage-surface-3: #232A52;
+  --heritage-primary: #8F97EC;       /* periwinkle — AA-safe text */
+  --heritage-primary-solid: #5560C9; /* fills / large shapes */
+  --heritage-accent: #D68A9C;        /* rose */
+  --heritage-muted-fg: #A9A6BC;
+  --heritage-border: rgba(236, 233, 240, 0.14);
+  --heritage-ring: #8F97EC;
+
+  --heritage-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --heritage-shadow-card-lg: 0 2px 4px rgba(0, 0, 0, 0.45), 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+.light {
+  color-scheme: light;
+
+  --heritage-bg: #F8F6F3;            /* warm stone */
+  --heritage-fg: #131C30;
+  --heritage-surface: #FFFFFF;
+  --heritage-surface-2: #EFEAE3;
+  --heritage-surface-3: #E6DFD5;
+  --heritage-primary: #252D6B;       /* navy */
+  --heritage-primary-solid: #252D6B;
+  --heritage-accent: #7D1F34;        /* burgundy */
+  --heritage-muted-fg: #545C6E;
+  --heritage-border: rgba(19, 28, 48, 0.14);
+  --heritage-ring: #252D6B;
+
+  --heritage-shadow-card: 0 1px 2px rgba(19, 28, 48, 0.05), 0 8px 24px rgba(19, 28, 48, 0.06);
+  --heritage-shadow-card-lg: 0 2px 4px rgba(19, 28, 48, 0.05), 0 20px 48px rgba(19, 28, 48, 0.10);
+}
+
+@theme inline {
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-display: "Fraunces Variable", Georgia, serif;
+
+  /* Heritage periwinkle/navy ramp (was the purple gamut-* scale) */
+  --color-gamut-50: #F0F1FB;
+  --color-gamut-100: #E1E3F7;
+  --color-gamut-200: #C6C9F0;
+  --color-gamut-300: #A6ABE9;
+  --color-gamut-400: #8F97EC;
+  --color-gamut-500: #5560C9;
+  --color-gamut-600: #3E48A0;
+  --color-gamut-700: #313A85;
+  --color-gamut-800: #252D6B;
+  --color-gamut-900: #1C2251;
+  --color-gamut-950: #131C30;
+
+  /* Semantic colors (shadcn names, Heritage values) */
+  --color-border: var(--heritage-border);
+  --color-input: var(--heritage-surface-2);
+  --color-ring: var(--heritage-ring);
+  --color-background: var(--heritage-bg);
+  --color-foreground: var(--heritage-fg);
+  --color-primary: var(--heritage-primary);
+  --color-primary-foreground: #FFFFFF;
+  --color-primary-solid: var(--heritage-primary-solid);
+  --color-secondary: var(--heritage-surface-2);
+  --color-secondary-foreground: var(--heritage-fg);
+  --color-muted: var(--heritage-surface-2);
+  --color-muted-foreground: var(--heritage-muted-fg);
+  --color-accent: var(--heritage-surface-2);
+  --color-accent-foreground: var(--heritage-fg);
+  --color-brand: var(--heritage-accent);
+  --color-destructive: #B3372F;
+  --color-destructive-foreground: #FFFFFF;
+  --color-card: var(--heritage-surface);
+  --color-card-foreground: var(--heritage-fg);
+  --color-popover: var(--heritage-surface);
+  --color-popover-foreground: var(--heritage-fg);
+  --color-surface: var(--heritage-surface);
+  --color-surface-2: var(--heritage-surface-2);
+  --color-surface-3: var(--heritage-surface-3);
+
+  /* Scope canvases stay Heritage-navy dark in both themes */
+  --color-scope-bg: #0B0E1C;
+  --color-scope-grid: #1B2040;
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+
+  /* Shadows */
+  --shadow-card: var(--heritage-shadow-card);
+  --shadow-card-lg: var(--heritage-shadow-card-lg);
 }
 
 /* ── Base Styles ── */
@@ -85,6 +150,26 @@ body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Headings: Fraunces display */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--heritage-primary) 20%, transparent);
+  color: var(--heritage-fg);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--heritage-ring) 70%, transparent);
 }
 
 /* ── Custom Slider Track (for shadcn sliders) ── */
@@ -97,10 +182,22 @@ input[type="range"]::-webkit-slider-thumb {
   image-rendering: pixelated;
 }
 
+/* Glass utility — Heritage tint */
+.glass {
+  background: rgba(11, 14, 28, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--heritage-border);
+}
+
+.light .glass {
+  background: rgba(248, 246, 243, 0.75);
+}
+
 /* ── Scrollbar Styling ── */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -108,10 +205,22 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-muted-foreground);
-  border-radius: 3px;
+  background: color-mix(in srgb, var(--heritage-primary) 25%, transparent);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-foreground);
+  background: color-mix(in srgb, var(--heritage-primary) 40%, transparent);
+}
+
+/* Global reduced-motion guard */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

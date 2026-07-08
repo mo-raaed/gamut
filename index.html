@@ -1,13 +1,23 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F8F6F3" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0E1C" />
     <title>Gamut — Interactive Photo Analysis Lab</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Prevent FOUC: apply a theme class before first paint. Gamut is
+         dark-first (color-analysis accuracy): first visit defaults to
+         dark; a saved explicit choice wins. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('gamut-theme');
+        var theme = saved === 'light' || saved === 'dark' ? saved : 'dark';
+        document.documentElement.classList.add(theme);
+      })();
+    </script>
   </head>
   <body class="antialiased">
     <div id="root"></div>

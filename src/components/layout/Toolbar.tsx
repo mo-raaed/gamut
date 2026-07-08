@@ -42,10 +42,10 @@ export function Toolbar({ onUploadClick }: ToolbarProps) {
       {/* Left: Logo + Brand */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-gamut-400 to-gamut-600 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-md bg-primary-solid flex items-center justify-center">
             <span className="text-[10px] font-bold text-white">G</span>
           </div>
-          <span className="text-sm font-semibold tracking-tight text-foreground">
+          <span className="font-display text-sm font-semibold tracking-tight text-foreground">
             Gamut
           </span>
         </div>

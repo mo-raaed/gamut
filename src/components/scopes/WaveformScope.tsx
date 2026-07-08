@@ -48,7 +48,7 @@ export function WaveformScope({ data, className }: WaveformScopeProps) {
 
     // IRE-style labels
     ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-    ctx.font = "8px Inter, monospace";
+    ctx.font = '8px "Plus Jakarta Sans Variable", monospace';
     ctx.fillText("100", 2, 10);
     ctx.fillText("75", 2, h * 0.25 + 3);
     ctx.fillText("50", 2, h * 0.5 + 3);
